@@ -3,11 +3,12 @@
     <head>
         <meta charset="utf-8">
         <meta content="width=device-width; initial-scale=1.0">
+        <script src="to-do.js"></script>
     </head>
     <body>
         <h1>Tasks</h1>
-        <div id="to-do-list"></div>
-        <button onclick="">Add Task</button>
-        <input><button>add</button><!--will be hidden until add task is clicked-->
+        <ul id="to-do-list"></ul>
+        <div id="task-creator" style="display: none;"><input type="text" id="todo-input"><button id="add-button" onclick="createTask()">Create</button></div><!--will be hidden until add task is clicked-->
+        <button onclick="showTaskCreator()" id="toggle-add-task">Add New Task</button><br>
     </body>
 </html>
