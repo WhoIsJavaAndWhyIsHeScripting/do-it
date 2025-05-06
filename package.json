@@ -1,0 +1,22 @@
+{
+  "name": "do-it",
+  "version": "1.0.0",
+  "description": "a task manager combined with a cute island game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WhoIsJavaAndWhyIsHeScripting/do-it.git"
+  },
+  "author": "Charlie Stought",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/WhoIsJavaAndWhyIsHeScripting/do-it/issues"
+  },
+  "homepage": "https://github.com/WhoIsJavaAndWhyIsHeScripting/do-it#readme",
+  "dependencies": {
+    "node-modules": "^0.0.1"
+  }
+}
