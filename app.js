@@ -2,8 +2,10 @@ const http = require('http');
 const express = require('express');
 const path = require('path');
 const mysql = require('mysql2');
+const url = require('url');
 const app = express();
 const port = 3000;
+var username;
 // connect to database 
 const con = mysql.createConnection({
     host: "localhost",
@@ -39,7 +41,8 @@ app.post('/log-in', (req, res) => {
             })
         }
     })
-    res.sendFile(path.join(__dirname, 'layout', 'logged-in', 'home', 'home.html'))
+    username = req.body.username;
+    res.redirect(`/home`);
 })
 // will have one table for users, one table for categories with user ids associated, one table for tasks with categories associated with them
 // serve static files from layout
@@ -48,6 +51,28 @@ app.use(express.static(path.join(__dirname, 'layout')));
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'layout', 'landing', 'landing.html'));
 })
+
+app.get('/home', (req, res) => {
+    if (username != undefined) {
+        res.sendFile(__dirname + `/layout/logged-in/home/home.html`);
+    } else {
+        res.redirect("/");
+    }
+})
+
+app.get('/to-do', (req, res) => {
+    if (username != undefined) {
+        res.sendFile(__dirname + `/layout/logged-in/to-do/to-do.html`);
+    } else {
+        res.redirect("/");
+    }
+})
+app.get('/to-do-css', (req, res) => {
+    res.sendFile(__dirname + `/layout/logged-in/to-do/to-do.css`);
+});
+app.get('/to-do-js', (req, res) => {
+    res.sendFile(__dirname + `/layout/logged-in/to-do/to-do.js`);
+});
 
 http.createServer(app).listen(port, 'localhost', (err) => {
     if (err) { console.log(err) };
