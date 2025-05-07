@@ -1,16 +1,16 @@
-function showTaskCreator() {
-    let taskCreator = document.getElementById("task-creator")
+function toggleElement(container, toggler, defaultMessage, toggledMessage) {
+    let taskCreator = document.getElementById(container)
     let isHidden = (taskCreator.style.display == "none");
     if (isHidden) {
         taskCreator.style.display = "block";
-        document.getElementById("toggle-add-task").textContent = "Cancel";
+        document.getElementById(toggler).textContent = toggledMessage;
     } else {
         taskCreator.style.display = "none";
-        document.getElementById("toggle-add-task").textContent = "Add New Task";
+        document.getElementById(toggler).textContent = defaultMessage;
     }
 }
 
-function createTask() {
+function createTask() { // to do: add parameter for category to add to
     let taskName = document.getElementById("todo-input").value;
     let todoItem = document.createElement("li");
     todoItem.class = "todo";
@@ -23,4 +23,17 @@ function createTask() {
         remover.parentElement.style.display = "none";
     })
     document.getElementById("to-do-list").appendChild(todoItem);
+}
+
+function createCategory() {
+    let categoryName = document.getElementById("new-category-name").value;
+    let categoryContainer = document.createElement("div");
+    let categoryTitle = document.createElement("h2");
+    categoryTitle.textContent = categoryName;
+    let categoryList = document.createElement("ul");
+    let listId = categoryName.toLowerCase().split(" ").join("-");
+    categoryList.id = listId;
+    categoryContainer.appendChild(categoryTitle);
+    categoryContainer.appendChild(categoryList);
+    document.getElementById("categories-container").appendChild(categoryContainer);
 }

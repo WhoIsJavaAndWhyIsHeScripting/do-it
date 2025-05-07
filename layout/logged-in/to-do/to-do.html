@@ -6,9 +6,21 @@
         <script src="to-do.js"></script>
     </head>
     <body>
+        <div id="sidebar"> <!--you will eventually be able to select categories from here to show tasks for that category, or show all-->
+            <button id="toggle-new-category" onclick="toggleElement('new-category-container', 'toggle-new-category', 'Create New Category', 'Cancel')">Create New Category</button>
+            <label id="new-category-container" style="display: none;">
+                Category name: <input id="new-category-name" type="text">
+                <button onclick="createCategory()">Create</button>
+            </label>
+        </div>
         <h1>Tasks</h1>
-        <ul id="to-do-list"></ul>
+        <div id="categories-container">
+            <div id="category1">
+                <h2>My First To-Do List</h2> <!--to do: add ability to edit category name and delete category-->
+                <ul id="to-do-list"></ul>
+            </div>
+        </div>
         <div id="task-creator" style="display: none;"><input type="text" id="todo-input"><button id="add-button" onclick="createTask()">Create</button></div><!--will be hidden until add task is clicked-->
-        <button onclick="showTaskCreator()" id="toggle-add-task">Add New Task</button><br>
+        <button onclick="toggleElement('task-creator', 'toggle-add-task', 'Add New Task', 'Cancel')" id="toggle-add-task">Add New Task</button><br>
     </body>
 </html>
