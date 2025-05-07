@@ -40,6 +40,7 @@ function createTask() {
     })
     todoItem.appendChild(todoLabel);
     document.getElementById(targetList).appendChild(todoItem);
+    document.getElementById("todo-input").value = "";
 }
 function createCategory() {
     let categoryName = document.getElementById("new-category-name").value;
@@ -56,6 +57,14 @@ function createCategory() {
     categoryContainer.appendChild(categoryList);
     document.getElementById("categories-container").appendChild(categoryContainer);
     addCategoryLink(categoryName);
+    let categories = document.getElementsByClassName("category");
+    Array.prototype.forEach.call(categories, e => {
+        e.style.display = "none";
+    });
+    document.getElementById(containerId).style.display = "block";
+    targetList = containerId + "-tasks";
+    document.getElementById("new-category-name").value = "";
+    toggleElement('new-category-container', 'toggle-new-category', 'Create New Category', 'Cancel');
 }
 
 function addCategoryLink(name) {
