@@ -10,11 +10,27 @@ function toggleElement(container, toggler, defaultMessage, toggledMessage) {
     }
 }
 var targetList = "my-first-to-do-list-tasks"
-function createTask() { // to do: add parameter for category to add to
+function createTask() {
     let taskName = document.getElementById("todo-input").value;
     let todoItem = document.createElement("li");
-    todoItem.class = "todo";
-    todoItem.textContent = taskName;
+    todoItem.className = "todo";
+    let todoLabel = document.createElement("label");
+    todoLabel.textContent = taskName;
+    let todoCheckbox = document.createElement("input");
+    // to do: check for duplicate IDs and handle accordingly
+    todoCheckbox.id = taskName.toLowerCase().split(" ").join("-");
+    todoCheckbox.type = "checkbox";
+    todoLabel.for = todoCheckbox.id;
+    todoLabel.appendChild(todoCheckbox);
+    todoCheckbox.addEventListener("click", () => {
+        todoLabel.className = "checked-waiting";
+        setTimeout(() => {
+            todoCheckbox.parentElement.parentElement.style.display = "none";
+            // to do: completed list
+            // to do: add currency
+            // to do: progress quests
+        }, 1000);
+    })
     let remover = document.createElement("button");
     remover.textContent = "X";
     remover.class = "remover";
@@ -22,6 +38,7 @@ function createTask() { // to do: add parameter for category to add to
     remover.addEventListener("click", () => {
         remover.parentElement.style.display = "none";
     })
+    todoItem.appendChild(todoLabel);
     document.getElementById(targetList).appendChild(todoItem);
 }
 function createCategory() {
