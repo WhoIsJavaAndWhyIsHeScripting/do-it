@@ -12,15 +12,19 @@
                 Category name: <input id="new-category-name" type="text">
                 <button onclick="createCategory()">Create</button>
             </label>
+            <div id="category-link-container"></div>
         </div>
         <h1>Tasks</h1>
         <div id="categories-container">
-            <div id="category1">
+            <div id="my-first-to-do-list" class="category">
                 <h2>My First To-Do List</h2> <!--to do: add ability to edit category name and delete category-->
-                <ul id="to-do-list"></ul>
+                <ul id="my-first-to-do-list-tasks"></ul>
             </div>
         </div>
         <div id="task-creator" style="display: none;"><input type="text" id="todo-input"><button id="add-button" onclick="createTask()">Create</button></div><!--will be hidden until add task is clicked-->
         <button onclick="toggleElement('task-creator', 'toggle-add-task', 'Add New Task', 'Cancel')" id="toggle-add-task">Add New Task</button><br>
     </body>
+    <script>
+        addCategoryLink("My First To-Do List");
+    </script>
 </html>
