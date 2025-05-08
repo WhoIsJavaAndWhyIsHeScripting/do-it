@@ -74,6 +74,16 @@ app.get('/to-do-js', (req, res) => {
     res.sendFile(__dirname + `/layout/logged-in/to-do/to-do.js`);
 });
 
+app.use(express.json());
+
+app.post('/save-data', (req, res) => {
+    let data = req.body;
+    let userId = username;
+    for (let [category, taskArray] of Object.entries(data)) {
+        //con.query()
+    }
+})
+
 http.createServer(app).listen(port, 'localhost', (err) => {
     if (err) { console.log(err) };
     console.log("server listening on port " + port);
