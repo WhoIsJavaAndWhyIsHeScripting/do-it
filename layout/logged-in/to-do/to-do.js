@@ -23,8 +23,8 @@ dataDictionary["my-first-to-do-list"] = [];
 /* creates a new task with the input as its name. will be a li element
 with a label for the task name and button for removing the task inside, and a 
 checkbox inside the input to mark the task as completed */
-function createTask() {
-    let taskName = document.getElementById("todo-input").value;
+function createTask(task = document.getElementById("todo-input").value, list = targetList) {
+    let taskName = task;
     let todoItem = document.createElement("li");
     todoItem.className = "todo";
     let todoLabel = document.createElement("label");
@@ -41,8 +41,8 @@ function createTask() {
         todoLabel.className = "checked-waiting";
         setTimeout(() => {
             todoCheckbox.parentElement.parentElement.style.display = "none";
-            let index = dataDictionary[targetList.slice(0, -6)].indexOf(taskName);
-            dataDictionary[targetList.slice(0, -6)].splice(index, 1);
+            let index = dataDictionary[list.slice(0, -6)].indexOf(taskName);
+            dataDictionary[list.slice(0, -6)].splice(index, 1);
             // to do: completed list
             // to do: add currency
             // to do: progress quests
@@ -55,22 +55,24 @@ function createTask() {
     todoItem.appendChild(remover);
     remover.addEventListener("click", () => {
         remover.parentElement.style.display = "none";
-        let index = dataDictionary[targetList.slice(0, -6)].indexOf(taskName);
-        dataDictionary[targetList.slice(0, -6)].splice(index, 1);
+        let index = dataDictionary[list.slice(0, -6)].indexOf(taskName);
+        dataDictionary[list.slice(0, -6)].splice(index, 1);
     })
     todoItem.appendChild(todoLabel);
-    document.getElementById(targetList).appendChild(todoItem);
+    document.getElementById(list).appendChild(todoItem);
     // clear input
     document.getElementById("todo-input").value = "";
     // update data (the slice method is to slice off the -tasks so it's just the category name)
-    dataDictionary[targetList.slice(0, -6)].push(taskName);
+    dataDictionary[list.slice(0, -6)].push(taskName);
 
 }
+// to do: add default parameters for loading data
+
 /* creates a new list of tasks with a name. is a div with an h2 inside it for the 
 title, and a ul to hold the tasks. The id of the container div will be "id", and the 
 id of the ul will be "id-tasks". each category container will have the class "category" */
-function createCategory() {
-    let categoryName = document.getElementById("new-category-name").value;
+function createCategory(catName = document.getElementById("new-category-name").value) {
+    let categoryName = catName;
     let categoryContainer = document.createElement("div");
     categoryContainer.className = "category";
     let categoryTitle = document.createElement("h2");
@@ -95,7 +97,7 @@ function createCategory() {
     document.getElementById("new-category-name").value = "";
     toggleElement('new-category-container', 'toggle-new-category', 'Create New Category', 'Cancel');
     // create new key/value pair for this category and its list
-    dataDictionary[categoryName] = [];
+    dataDictionary[containerId] = [];
 }
 // creates a link in the sidebar to activate a category
 // name - name of the category
@@ -132,4 +134,26 @@ function saveData() {
     })
     .catch(error => console.log(error));
 
+}
+
+function loadData() {
+    fetch('/load-data', {
+        method: 'GET', 
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        let categoryList = ["my-first-to-do-list"];
+        for ([key, object] of Object.entries(data)) {
+            var category = object.categoryName;
+            var task = object.taskName;
+            if (categoryList.indexOf(category) == -1) {
+                createCategory(category);
+                categoryList.push(category);
+            }
+            createTask(task, category.toLowerCase().split(" ").join("-") + "-tasks");
+        }
+    })
 }

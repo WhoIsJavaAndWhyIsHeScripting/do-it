@@ -26,7 +26,7 @@ app.post('/log-in', (req, res) => {
         }
         console.log(results);
     })
-    con.query(`SELECT * FROM users WHERE username = '${req.body.username}'`, (err, result, fields) => {
+    con.query(`SELECT * FROM users WHERE user = '${req.body.username}'`, (err, result, fields) => {
         if (err) {
             console.log(err);
         }
@@ -34,7 +34,7 @@ app.post('/log-in', (req, res) => {
             console.log("dupe detected");
             console.log(result.length);
         } else {
-            con.query(`INSERT INTO users (username) VALUES ('${req.body.username}')`, (err, result, fields) => {
+            con.query(`INSERT INTO users (user, silver, gold) VALUES ('${req.body.username}', 0, 0)`, (err, result, fields) => {
                 if (err) {
                     console.log(err);
                 }
@@ -80,8 +80,30 @@ app.post('/save-data', (req, res) => {
     let data = req.body;
     let userId = username;
     for (let [category, taskArray] of Object.entries(data)) {
-        //con.query()
+       con.query(`INSERT INTO categories (user, category) VALUES ('${userId}', '${category}')`, (err, result) => {
+            if (err) {
+                console.log(err);
+            }
+            console.log(result);
+       });
+       for (let taskName of taskArray) {
+            con.query(`INSERT INTO tasks (user, categoryName, taskName) VALUES ('${userId}', '${category}', '${taskName}')`, (err, result) => {
+                if (err) {
+                    console.log(err);
+                }
+            console.log(result);
+        })
+       }
     }
+})
+
+app.get('/load-data', (req, res) => {
+    con.query(`SELECT categoryName, taskName FROM tasks WHERE user='${username}'`, (err, rows) => {
+        if (err) {
+            console.log(err);
+        }
+        res.json(rows);
+    })
 })
 
 http.createServer(app).listen(port, 'localhost', (err) => {
