@@ -78,20 +78,36 @@ app.use(express.json());
 
 app.post('/save-data', (req, res) => {
     let data = req.body;
+    console.log(req.body);
     let userId = username;
+    con.query(`DELETE FROM tasks WHERE user='${userId}'`, (err, result) => {
+        if (err) {
+            console.log(err);
+        }
+        console.log("deleting tasks: " , result);
+    })
+    con.query(`DELETE FROM categories WHERE user='${userId}'`, (err, result) => {
+        if (err) {
+            console.log(err);
+        }
+        console.log("deleting categories: " , result);
+    })
     for (let [category, taskArray] of Object.entries(data)) {
-       con.query(`INSERT INTO categories (user, category) VALUES ('${userId}', '${category}')`, (err, result) => {
+        console.log(Object.entries(data));
+        console.log(category);
+        console.log(taskArray);
+       con.query(`INSERT INTO categories (user, categoryName) VALUES ('${userId}', '${category}')`, (err, result) => {
             if (err) {
                 console.log(err);
             }
-            console.log(result);
+            console.log("inserting categories: " , result);
        });
        for (let taskName of taskArray) {
             con.query(`INSERT INTO tasks (user, categoryName, taskName) VALUES ('${userId}', '${category}', '${taskName}')`, (err, result) => {
                 if (err) {
                     console.log(err);
                 }
-            console.log(result);
+            console.log("inserting tasks: ",result);
         })
        }
     }

@@ -15,16 +15,19 @@ function toggleElement(container, toggler, defaultMessage, toggledMessage) {
     }
 }
 // the target list will be the category that tasks are added to
-var targetList = "my-first-to-do-list-tasks";
+var targetList = "My First To-Do List";
 // this dictionary will store all categories and associated tasks
 var dataDictionary = {};
 // each key will be a category name with a value of an array of task names
-dataDictionary["my-first-to-do-list"] = [];
+dataDictionary["My First To-Do List"] = [];
 /* creates a new task with the input as its name. will be a li element
 with a label for the task name and button for removing the task inside, and a 
 checkbox inside the input to mark the task as completed */
 function createTask(task = document.getElementById("todo-input").value, list = targetList) {
     let taskName = task;
+    // to do: make id-ize function to reduce the number of times you have
+    // to type out this god-awful string of functions
+    let listId = list.toLowerCase().split(" ").join("-");
     let todoItem = document.createElement("li");
     todoItem.className = "todo";
     let todoLabel = document.createElement("label");
@@ -41,8 +44,8 @@ function createTask(task = document.getElementById("todo-input").value, list = t
         todoLabel.className = "checked-waiting";
         setTimeout(() => {
             todoCheckbox.parentElement.parentElement.style.display = "none";
-            let index = dataDictionary[list.slice(0, -6)].indexOf(taskName);
-            dataDictionary[list.slice(0, -6)].splice(index, 1);
+            let index = dataDictionary[list].indexOf(taskName);
+            dataDictionary[list].splice(index, 1);
             // to do: completed list
             // to do: add currency
             // to do: progress quests
@@ -55,19 +58,19 @@ function createTask(task = document.getElementById("todo-input").value, list = t
     todoItem.appendChild(remover);
     remover.addEventListener("click", () => {
         remover.parentElement.style.display = "none";
-        let index = dataDictionary[list.slice(0, -6)].indexOf(taskName);
-        dataDictionary[list.slice(0, -6)].splice(index, 1);
+        let index = dataDictionary[list].indexOf(taskName);
+        dataDictionary[list].splice(index, 1);
     })
     todoItem.appendChild(todoLabel);
-    document.getElementById(list).appendChild(todoItem);
+    document.getElementById(listId).appendChild(todoItem);
     // clear input
     document.getElementById("todo-input").value = "";
-    // update data (the slice method is to slice off the -tasks so it's just the category name)
-    dataDictionary[list.slice(0, -6)].push(taskName);
+    // update data 
+    dataDictionary[list].push(taskName);
 
 }
-// to do: add default parameters for loading data
 
+// TO DO: add ability to delete category
 /* creates a new list of tasks with a name. is a div with an h2 inside it for the 
 title, and a ul to hold the tasks. The id of the container div will be "id", and the 
 id of the ul will be "id-tasks". each category container will have the class "category" */
@@ -92,12 +95,13 @@ function createCategory(catName = document.getElementById("new-category-name").v
         e.style.display = "none";
     });
     document.getElementById(containerId).style.display = "block";
-    targetList = containerId + "-tasks";
+    targetList = categoryName;
     // clear the input and hide it
     document.getElementById("new-category-name").value = "";
     toggleElement('new-category-container', 'toggle-new-category', 'Create New Category', 'Cancel');
     // create new key/value pair for this category and its list
-    dataDictionary[containerId] = [];
+    // TO DO: don't store id, store name (would require another function (forget which) to use name instead of id)
+    dataDictionary[categoryName] = [];
 }
 // creates a link in the sidebar to activate a category
 // name - name of the category
@@ -112,7 +116,7 @@ function addCategoryLink(name) {
             e.style.display = "none";
           });
         document.getElementById(catId).style.display = "block";
-        targetList = catId + "-tasks";
+        targetList = name;
     })
     document.getElementById("category-link-container").appendChild(catLink);
 }
@@ -145,7 +149,7 @@ function loadData() {
     })
     .then(response => response.json())
     .then(data => {
-        let categoryList = ["my-first-to-do-list"];
+        let categoryList = ["My First To-Do List"];
         for ([key, object] of Object.entries(data)) {
             var category = object.categoryName;
             var task = object.taskName;
@@ -153,7 +157,7 @@ function loadData() {
                 createCategory(category);
                 categoryList.push(category);
             }
-            createTask(task, category.toLowerCase().split(" ").join("-") + "-tasks");
+            createTask(task, category);
         }
     })
 }
