@@ -20,6 +20,8 @@ var targetList = "My First To-Do List";
 var dataDictionary = {};
 // each key will be a category name with a value of an array of task names
 dataDictionary["My First To-Do List"] = [];
+// save currency values
+var silverGold = [0, 0];
 /* creates a new task with the input as its name. will be a li element
 with a label for the task name and button for removing the task inside, and a 
 checkbox inside the input to mark the task as completed */
@@ -46,6 +48,9 @@ function createTask(task = document.getElementById("todo-input").value, list = t
             todoCheckbox.parentElement.parentElement.style.display = "none";
             let index = dataDictionary[list].indexOf(taskName);
             dataDictionary[list].splice(index, 1);
+            silverGold[0] += 5;
+            document.getElementById("silver").innerHTML = "Silver: " + silverGold[0];
+            document.getElementById("gold").innerHTML = "Gold: " + silverGold[1];
             // to do: completed list
             // to do: add currency
             // to do: progress quests
@@ -120,7 +125,7 @@ function addCategoryLink(name) {
     })
     document.getElementById("category-link-container").appendChild(catLink);
 }
-
+// TO DO: FIX empty categories being removed on save
 function saveData() {
     fetch('/save-data', {
         method: 'POST', 
@@ -137,11 +142,28 @@ function saveData() {
         }
     })
     .catch(error => console.log(error));
-
+    saveCurrency();
 }
 
+function saveCurrency() {
+    fetch('/save-currency', {
+        method: 'POST', 
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(silverGold)
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log("saved data");
+        } else {
+            console.log("error");
+        }
+    })
+    .catch(error => console.log(error));
+}
 function loadData() {
-    fetch('/load-data', {
+    fetch('/load-categories', {
         method: 'GET', 
         headers: {
             'Content-Type': 'application/json'
@@ -149,15 +171,46 @@ function loadData() {
     })
     .then(response => response.json())
     .then(data => {
-        let categoryList = ["My First To-Do List"];
         for ([key, object] of Object.entries(data)) {
-            var category = object.categoryName;
-            var task = object.taskName;
-            if (categoryList.indexOf(category) == -1) {
-                createCategory(category);
-                categoryList.push(category);
-            }
+            let category = object.categoryName;
+            createCategory(category);
+        }
+        loadTasks();
+    });
+    }
+function loadTasks() {
+    fetch('/load-tasks', {
+        method: 'GET', 
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        for ([key, object] of Object.entries(data)) {
+            let category = object.categoryName;
+            let task = object.taskName;
             createTask(task, category);
         }
     })
+    loadCurrency();
+}
+
+function loadCurrency() {
+    fetch('/load-currency', {
+        method: 'GET', 
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        silverGold[0] = data[0].silver;
+        silverGold[1] = data[0].gold;
+    })
+    .then(() => {
+        document.getElementById("silver").innerHTML = "Silver: " + silverGold[0];
+        document.getElementById("gold").innerHTML = "Gold: " + silverGold[1];
+    })
+    
 }

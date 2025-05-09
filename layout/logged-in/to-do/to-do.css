@@ -2,3 +2,9 @@
     color: gray;
     text-decoration: line-through;
 }
+
+#container {
+    display: grid;
+    grid-template-columns: 25% 75%;
+    column-gap: 20px;
+}

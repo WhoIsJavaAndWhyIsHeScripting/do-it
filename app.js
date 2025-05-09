@@ -93,7 +93,6 @@ app.post('/save-data', (req, res) => {
         console.log("deleting categories: " , result);
     })
     for (let [category, taskArray] of Object.entries(data)) {
-        console.log(Object.entries(data));
         console.log(category);
         console.log(taskArray);
        con.query(`INSERT INTO categories (user, categoryName) VALUES ('${userId}', '${category}')`, (err, result) => {
@@ -113,8 +112,39 @@ app.post('/save-data', (req, res) => {
     }
 })
 
-app.get('/load-data', (req, res) => {
+app.use(express.json());
+
+app.post('/save-currency', (req, res) => {
+    let data = req.body;
+    console.log(data);
+    con.query(`UPDATE users SET silver = ${data[0]}, gold = ${data[1]} WHERE user = '${username}'`, (err, result) => {
+        if (err) {
+            console.log(data);
+            console.log("error updating currency", err);
+        }
+        console.log(result);
+    })
+})
+
+app.get('/load-categories', (req, res) => {
+    con.query(`SELECT categoryName FROM categories WHERE user='${username}'`, (err, rows) => {
+        if (err) {
+            console.log(err);
+        }
+        res.json(rows);
+    })
+});
+app.get('/load-tasks', (req, res) => {
     con.query(`SELECT categoryName, taskName FROM tasks WHERE user='${username}'`, (err, rows) => {
+        if (err) {
+            console.log(err);
+        }
+        res.json(rows);
+    })
+})
+
+app.get('/load-currency', (req, res) => {
+    con.query(`SELECT silver, gold FROM users WHERE user='${username}'`, (err, rows) => {
         if (err) {
             console.log(err);
         }

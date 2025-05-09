@@ -7,28 +7,32 @@
         <script src="/to-do-js"></script>
     </head>
     <body>
-        <div id="sidebar"> <!--you will eventually be able to select categories from here to show tasks for that category, or show all-->
-            <button id="toggle-new-category" onclick="toggleElement('new-category-container', 'toggle-new-category', 'Create New Category', 'Cancel')">Create New Category</button>
-            <label id="new-category-container" style="display: none;">
-                Category name: <input id="new-category-name" type="text">
-                <button onclick="createCategory()">Create</button>
-            </label>
-            <div id="category-link-container"></div>
-        </div>
-        <h1>Tasks</h1>
-        <div id="categories-container">
-            <div id="my-first-to-do-list" class="category">
-                <h2>My First To-Do List</h2> <!--to do: add ability to edit category name and delete category-->
-                <ul id="my-first-to-do-list-tasks"></ul>
+        <div id="container">
+            <div id="sidebar"> <!--to do: show all categories-->
+                <p id="silver"></p>
+                <p id="gold"></p>
+                <button id="toggle-new-category" onclick="toggleElement('new-category-container', 'toggle-new-category', 'Create New Category', 'Cancel')">Create New Category</button>
+                <label id="new-category-container" style="display: none;">
+                    Category name: <input id="new-category-name" type="text">
+                    <button onclick="createCategory()">Create</button>
+                </label>
+                <div id="category-link-container"></div>
+            </div>
+            <div id="task-container">
+                <h1>Tasks</h1>
+                <div id="categories-container">
+                    <div id="my-first-to-do-list" class="category">
+                        <h2>My First To-Do List</h2> <!--to do: add ability to edit category name and delete category-->
+                        <ul id="my-first-to-do-list-tasks"></ul>
+                    </div>
+                </div>
+                <div id="task-creator" style="display: none;"><input type="text" id="todo-input"><button id="add-button" onclick="createTask()">Create</button></div><!--will be hidden until add task is clicked-->
+                <button onclick="toggleElement('task-creator', 'toggle-add-task', 'Add New Task', 'Cancel')" id="toggle-add-task">Add New Task</button><br>
+                <button onclick="saveData()">Save Data</button>
             </div>
         </div>
-        <div id="task-creator" style="display: none;"><input type="text" id="todo-input"><button id="add-button" onclick="createTask()">Create</button></div><!--will be hidden until add task is clicked-->
-        <button onclick="toggleElement('task-creator', 'toggle-add-task', 'Add New Task', 'Cancel')" id="toggle-add-task">Add New Task</button><br>
-        <button onclick="saveData()">Save Data</button>
     </body>
     <script>
         loadData();
-        addCategoryLink("My First To-Do List");
-        
     </script>
 </html>
