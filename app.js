@@ -4,6 +4,7 @@ const session = require ('express-session');
 const path = require('path');
 const mysql = require('mysql2');
 const url = require('url');
+const { randomUUID } = require('crypto');
 const app = express();
 const port = process.env.PORT || 3000;
 // connect to database 
@@ -17,7 +18,11 @@ con.connect(function(err) {
     if (err) throw err;
     console.log("Connected to database");
 });
-app.use(session({}));
+app.use(session({
+    secret: randomUUID(),
+    resave: true,
+    saveUninitialized: false
+}));
 // handle logging in
 app.use(express.urlencoded({ extended: true }))
 app.post('/log-in', (req, res) => {
@@ -43,7 +48,7 @@ app.post('/log-in', (req, res) => {
             })
         }
     })
-    res.redirect(`/home?user=${req.body.username}`);
+    res.redirect(`/home`);
 })
 // will have one table for users, one table for categories with user ids associated, one table for tasks with categories associated with them
 // serve static files from layout
@@ -74,6 +79,14 @@ app.get('/to-do-css', (req, res) => {
 app.get('/to-do-js', (req, res) => {
     res.sendFile(__dirname + `/layout/logged-in/to-do/to-do.js`);
 });
+
+app.get ('/quests', (req, res) => {
+    if (req.session.username != undefined) {
+        res.sendFile(__dirname + `/layout/logged-in/quests/quests.html`);
+    } else {
+        res.redirect("/");
+    }
+})
 
 app.use(express.json());
 
@@ -152,6 +165,7 @@ app.get('/load-currency', (req, res) => {
         res.json(rows);
     })
 })
+
 
 http.createServer(app).listen(port, 'localhost', (err) => {
     if (err) { console.log(err) };
