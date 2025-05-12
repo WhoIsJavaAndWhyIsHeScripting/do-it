@@ -9,8 +9,10 @@
     <body>
         <div id="container">
             <div id="sidebar"> <!--to do: show all categories-->
-                <p id="silver"></p>
-                <p id="gold"></p>
+                <div id="currency-container">
+                    <p id="silver"></p>
+                    <p id="gold"></p>
+                </div>
                 <button id="toggle-new-category" onclick="toggleElement('new-category-container', 'toggle-new-category', 'Create New Category', 'Cancel')">Create New Category</button>
                 <label id="new-category-container" style="display: none;">
                     Category name: <input id="new-category-name" type="text">
@@ -30,6 +32,11 @@
                 <button onclick="toggleElement('task-creator', 'toggle-add-task', 'Add New Task', 'Cancel')" id="toggle-add-task">Add New Task</button><br>
                 <button onclick="saveData()">Save Data</button>
             </div>
+            <div id="navbar1"><a class="navbar" href="/home">Home</a></div>
+            <div id="navbar2"><a class="navbar" href="/to-do">To-Do</a></div>
+            <div id="navbar3"><a class="navbar" href="/quests">Quests</a></div>
+            <div id="navbar4"><a class="navbar" href="/island">Island</a></div>
+            <div id="navbar5"><a class="navbar" href="/character">Character</a></div>
         </div>
     </body>
     <script>

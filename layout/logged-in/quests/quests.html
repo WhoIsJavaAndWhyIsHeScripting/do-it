@@ -5,10 +5,28 @@
         <meta content="width=device-width; initial-scale=1.0">
     </head>
     <body>
-        <h1>Your Quests</h1>
+        <h1>Quests</h1>
+        <h2>Getting Started</h2>
+        <div id="getting-started"> <!--TO DO: counter for total gold in this category-->
+            <ul>
+                <!--TO DO: progress indicator, toggleable descriptions, and will show when completed-->
+                <li id="gettingstarted1">Create your first task <span id="progress-gettingstarted1"></span><br>Reward: 1 gold</li>
+                <li id="gettingstarted2">Create a new category <span id="progress-gettingstarted2"></span><br>Reward: 1 gold</li>
+                <li id="gettingstarted3">Complete 3 tasks <span id="progress-gettingstarted3"></span><br>Reward: 1 gold</li>
+            </ul>
+            <strong>COMPLETION REWARD: 2 gold</strong>
+        </div>
+        <!-- TO DO: make daily and weekly quests locked until "getting started" is completed-->
         <h2>Daily</h2>
-        <div id="daily-quests"></div>
+        <div id="daily-quests">
+            <li id="daily1"></li>
+            <li id="daily2"></li>
+            <li id="daily3"></li>
+        </div>
         <h2>Weekly</h2>
         <div id="weekly-quests"></div>
+        <li id="weekly1"></li>
+        <li id="weekly2"></li>
+        <li id="weekly3"></li>
     </body>
 </html>

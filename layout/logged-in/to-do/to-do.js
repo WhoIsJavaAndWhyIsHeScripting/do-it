@@ -1,3 +1,4 @@
+
 /* toggles an input and changes text of the button used to toggle it
 container - the element that contains the input, add button and toggle button
 toggler - the element that you click to show/hide the input
@@ -20,6 +21,7 @@ var targetList = "My First To-Do List";
 var dataDictionary = {};
 // each key will be a category name with a value of an array of task names
 dataDictionary["My First To-Do List"] = [];
+
 // save currency values
 var silverGold = [0, 0];
 /* creates a new task with the input as its name. will be a li element
