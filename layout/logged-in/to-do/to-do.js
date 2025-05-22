@@ -24,6 +24,8 @@ dataDictionary["My First To-Do List"] = [];
 
 // save currency values
 var silverGold = [0, 0];
+// save tasks completed 
+var tasksCompleted = 0;
 /* creates a new task with the input as its name. will be a li element
 with a label for the task name and button for removing the task inside, and a 
 checkbox inside the input to mark the task as completed */
@@ -51,6 +53,7 @@ function createTask(task = document.getElementById("todo-input").value, list = t
             let index = dataDictionary[list].indexOf(taskName);
             dataDictionary[list].splice(index, 1);
             silverGold[0] += 5;
+            tasksCompleted++;
             document.getElementById("silver").innerHTML = "Silver: " + silverGold[0];
             document.getElementById("gold").innerHTML = "Gold: " + silverGold[1];
             // to do: completed list
@@ -154,6 +157,25 @@ function saveCurrency() {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(silverGold)
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log("saved data");
+        } else {
+            console.log("error");
+        }
+        saveCompletedCount();
+    })
+    .catch(error => console.log(error));
+}
+
+function saveCompletedCount() {
+    fetch('/save-completed', {
+        method: 'POST', 
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(tasksCompleted)
     })
     .then(response => {
         if (response.ok) {

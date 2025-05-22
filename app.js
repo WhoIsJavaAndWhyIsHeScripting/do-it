@@ -140,6 +140,15 @@ app.post('/save-currency', (req, res) => {
     })
 })
 
+app.post('/save-completed', (req, res) => {
+    con.query(`UPDATE users SET tasksCompleted = ${req.body.tasksCompleted} WHERE user = '${req.session.username}'`, (err, result) => {
+        if (err) {
+            console.log("err saving completed tasks ", err);
+        }
+        console.log(result);
+    })
+});
+
 app.get('/load-categories', (req, res) => {
     con.query(`SELECT categoryName FROM categories WHERE user='${req.session.username}'`, (err, rows) => {
         if (err) {
